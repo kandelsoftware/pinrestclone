@@ -1,5 +1,6 @@
 class PinsController < ApplicationController
-	before_action :find_pin, only:[:show,:edit,:update,:destroy]
+	before_action :find_pin, only:[:show,:edit,:update,:destroy,:upvote]
+  before_action :authenticate_user!,except:[:index,:show]
 
 	def index
 		@pins=Pin.all.order("Created_at DESC")
@@ -33,19 +34,23 @@ class PinsController < ApplicationController
 
 	end
 
-	def delete
+	def destroy
 		@pin.destroy
-		respone_to do |format|
+		respond_to? do |format|
 		format.html {redirect_to pin_url, notice: 'pin was successfully destroyed.'}
 	  end
 	end
   
-
+ def upvote
+  @pin.upvote_by current_user
+  redirect_to :back
+   
+ end
 
 	private 
     
     def pins_params
-     params.require(:pin).permit(:title,:description)	
+     params.require(:pin).permit(:title,:description,:image,:upvote)	
     end
 
     def find_pin

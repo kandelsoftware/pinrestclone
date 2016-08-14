@@ -45,6 +45,8 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+  Paperclip.options[:command_path] = "/usr/local/bin/"
+
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
